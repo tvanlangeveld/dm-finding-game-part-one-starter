@@ -12,10 +12,21 @@ import UIKit
  */
 class DMFindingGameViewController: UIViewController {
     
-    /**
-     2.1 Create IBOutlets for the target letter label and the score label.
-     2.2 Create an IBOutlet collection for the letter buttons.
-     */
+    
+    @IBOutlet weak var targetedLetter: UILabel!
+    
+    
+    @IBOutlet weak var scored: UILabel!
+    
+    @IBOutlet var letterBtn: [UIButton]!
+    
+
+    @IBAction func tappedLetterBtn(_ sender: UIButton) {
+        var title = sender.titleLabel?.text
+        calculateNewScore(selectedLetter: title ?? "button")
+        updateScoreLabel()
+        newRound()
+    }
     
     /**
      These variables will help us with the gameplay. You do not need to modify this code.
@@ -39,7 +50,12 @@ class DMFindingGameViewController: UIViewController {
      3.3 Call the `updateTargetLetterLabel` and `updateLetterButtons` functions.
      */
     func newRound() {
+        var randomIndex: String = letters.randomElement() ?? "Letter"
         
+        targetLetter = randomIndex
+        randomLetters = generateRandomLetters(numLetters: letterBtn.count)
+        updateTargetLetterLabel()
+        updateLetterButtons()
     }
     
     /**
@@ -49,7 +65,16 @@ class DMFindingGameViewController: UIViewController {
      This is a tricky function, but feel free to run the provided test in `DMFindingGameTests` to know if your code is correct. Let your Tech Lead know if you need help. :)
      */
     func generateRandomLetters(numLetters: Int) -> [String] {
-        return []
+        var randomLetterArr: [String] = []
+        randomLetterArr.append(targetLetter)
+        for _ in 1..<numLetters {
+            var randomLet: String = letters.randomElement()!
+            while randomLetterArr.contains(randomLet) {
+                 randomLet = letters.randomElement()!
+            }
+            randomLetterArr.append(randomLet)
+        }
+        return randomLetterArr.shuffled()
     }
     
     /**
@@ -57,7 +82,9 @@ class DMFindingGameViewController: UIViewController {
      Feel free to run the provided test in `DMFindingGameTests` to know if your code is correct.
      */
     func calculateNewScore(selectedLetter: String) {
-        
+        if selectedLetter == targetLetter {
+            score += 1
+        }
     }
     
     /**
@@ -70,14 +97,15 @@ class DMFindingGameViewController: UIViewController {
      7.1 Update the `targetLetterLabel`'s text to be the `targetLetter`.
      */
     func updateTargetLetterLabel() {
-        
+        targetedLetter.text = targetLetter
     }
     
     /**
      8.1 Update the `scoreLabel`'s text to be the `score`.
      */
     func updateScoreLabel() {
-        
+        var string = String(score)
+        scored.text = string
     }
     
     /**
@@ -85,6 +113,9 @@ class DMFindingGameViewController: UIViewController {
      Hint: `UIButton`s have a `setTitle` function.
      */
     func updateLetterButtons() {
+        for i in 0..<letterBtn.count{
+            letterBtn[i].setTitle(randomLetters[i], for: .normal)
+        }
         
     }
 }
