@@ -62,11 +62,12 @@ class GameViewController: UIViewController {
    
     @IBAction func letterButtonTapped(_ sender: UIButton) {
         
-        sender.backgroundColor = UIColor.red
-        
-        Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { _ in
-            
-        }
+        sender.backgroundColor = UIColor.systemRed
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+
+                    sender.backgroundColor = UIColor.systemBlue
+                }
+
         
         if let letterKey = sender.titleLabel?.text{
             

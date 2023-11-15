@@ -21,7 +21,8 @@ class GameBrain {
     
     func generateRandomLetters() -> [String] {
         var randomGameLetters: [String] = []
-        print(numLetters)
+        randomGameLetters.append(targetLetter)
+        
         for _ in 1..<numLetters {
             var randomLet: String = letters.randomElement()!
             while randomGameLetters.contains(randomLet) {
@@ -29,7 +30,6 @@ class GameBrain {
             }
             randomGameLetters.append(randomLet)
         }
-                randomGameLetters.append(targetLetter)
 
                 return randomGameLetters.shuffled()
     }
@@ -64,4 +64,5 @@ class GameBrain {
         
         
     }
+    
 }
